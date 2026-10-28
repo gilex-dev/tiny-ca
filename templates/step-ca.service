@@ -1,0 +1,22 @@
+[Unit]
+Description=Smallstep CA Server
+After=network.target pcscd.service
+Requires=pcscd.service
+
+[Service]
+Type=simple
+User=step
+Group=step
+WorkingDirectory=/etc/step-ca
+Environment=STEPPATH=/etc/step-ca
+ExecStart=/usr/local/bin/step-ca /etc/step-ca/config/ca.json
+
+# Hardening
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ReadWritePaths=/etc/step-ca
+
+[Install]
+WantedBy=multi-user.target

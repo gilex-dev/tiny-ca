@@ -1,0 +1,7 @@
+{
+  "kms": {
+    "type": "pkcs11",
+    "uri": "pkcs11:module-path=/usr/lib/arm-linux-gnueabihf/pkcs11/opensc-pkcs11.so;token=Pico-HSM;pin-source=/etc/step-ca/hsm-pin.txt"
+  },
+  "key": "pkcs11:id=01"
+}
