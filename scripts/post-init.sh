@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PROVISIONER_NAME=fca@fnas.home.arpa
+DNS_NAME=fca.home.arpa,192.168.2.9
+
 cd "$(dirname "${BASH_SOURCE[0]}")" && cd ..
 # all paths relative to project root from here
 
@@ -12,13 +15,14 @@ sudo mount $PUBLIC_CA_PART /mnt/public_ca
 
 export STEPPATH=/etc/step-ca
 sudo --preserve-env step ca init --name="fca" \
-    --dns="fca.home.arpa,192.168.2.9" --address=":443" \
-    --provisioner="fca@fnas.home.arpa" \
+    --dns="$DNS_NAME" --address=":443" \
+    --provisioner="$PROVISIONER_NAME" \
     --deployment-type standalone \
     --remote-management
 
 sudo chown -R step:step /etc/step-ca/
 
+# TODO: add hint to enter same password again & quit after server started
 sudo -su step bash -c "STEPPATH=/etc/step-ca step-ca"
 
 sudo cp /mnt/public_ca/tiny-ca_public_certs/intermediate_ca.crt /mnt/public_ca/tiny-ca_public_certs/root_ca.crt /etc/step-ca/certs
