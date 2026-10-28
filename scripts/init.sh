@@ -64,7 +64,7 @@ read -p "Put the pico into flash mode now (hold the BOOT button while pressing R
 sleep 4 && lsblk
 
 read -p "Enter the path to the pico's partition [/dev/sdc1]: " PICO_PART_PATH
-PICO_PART_PATH=${PICO_PART_PATH:-/dev/sdb1}
+PICO_PART_PATH=${PICO_PART_PATH:-/dev/sdc1}
 
 sudo mkdir -p /mnt/pico
 sudo mount $PICO_PART_PATH /mnt/pico
@@ -73,7 +73,7 @@ sudo umount /mnt/pico
 
 read -p "Reset the pico (press the RESET button). Then press enter"
 
-PICO_SO_PIN=$(echo -n $(pwgen -s 8 1) | od -A n -t x1 | sed 's/ *//g')
+PICO_SO_PIN=$(echo -n $(pwgen -s 8 1) | od -A n -t x1 | sed 's/ *//g') # TODO: check so-pin requirements again
 PICO_PIN=$(sudo cat /etc/step-ca/hsm-pin.txt)
 sudo chown step:step /etc/step-ca/hsm-pin.txt
 sudo chmod u=r,g=,o= /etc/step-ca/hsm-pin.txt
@@ -124,10 +124,11 @@ while [[ "$input" != "$PICO_SO_PIN" ]]; do
     read -rp "Write down and enter the pico so pin again $PICO_SO_PIN:" input
 done
 
-source .env
-sudo nmcli con modify $NMCLI_CON_NAME autoconnect on
-
 read -p "Done! Press enter to reboot now (next script is post-init.sh)"
 
 sudo raspi-config nonint do_overlayfs 1
+
+source .env
+sudo nmcli con modify $NMCLI_CON_NAME autoconnect on # TODO: check if this is persistent & why it timeouts sometimes
+
 sudo reboot

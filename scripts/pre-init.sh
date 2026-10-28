@@ -63,11 +63,11 @@ EOF
 sudo udevadm control --reload-rules
 
 echo "export NMCLI_CON_NAME=$NMCLI_CON_NAME" >.env
-sudo cp templates/50-step-pcsc.rules /etc/udev/rules.d/75-pico-hsm.rules
+sudo cp templates/50-step-pcsc.rules /etc/polkit-1/rules.d/
 # sudo systemctl restart polkit
 # sudo systemctl restart pcscd
 
-sudo nmcli connection modify $NMCLI_CON_NAME autoconnect off
+sudo nmcli connection modify $NMCLI_CON_NAME autoconnect off # TODO: check why it timeouts sometimes
 
 read -p "Done! Press enter to reboot now or exit with CTRL+C (next script is init.sh)"
 

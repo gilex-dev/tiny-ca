@@ -17,12 +17,14 @@ sudo --preserve-env step ca init --name="fca" \
     --deployment-type standalone \
     --remote-management
 
+sudo chown -R step:step /etc/step-ca/
+
 sudo -su step bash -c "STEPPATH=/etc/step-ca step-ca"
 
-sudo cp /mnt/public_ca/ca_public_certs/intermediate_ca.crt /mnt/public_ca/ca_public_certs/root_ca.crt /etc/step-ca/certs
+sudo cp /mnt/public_ca/tiny-ca_public_certs/intermediate_ca.crt /mnt/public_ca/tiny-ca_public_certs/root_ca.crt /etc/step-ca/certs
 sudo umount /mnt/public_ca
 
-sudo mv /etc/st-ca/config/ca.json /etc/step-ca/config/ca.json.bak
+sudo mv /etc/step-ca/config/ca.json /etc/step-ca/config/ca.json.bak
 
 sudo bash -c "jq -s 'add' /etc/step-ca/config/ca.json.bak templates/ca.part.json > /etc/step-ca/config/ca.json"
 
@@ -30,4 +32,4 @@ sudo chown -R step:step /etc/step-ca/
 
 sudo install templates/step-ca.service /etc/systemd/system/step-ca.service
 sudo systemctl daemon-reload
-sudo systemctl enable step-ca.service
+sudo systemctl enable --now step-ca.service
