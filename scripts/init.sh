@@ -55,7 +55,7 @@ STEP_CA_KEY_PW=$(pwgen -s 32 1)
 echo $STEP_CA_KEY_PW >/tmp/STEP_CA_KEY_PW
 
 echo "Creating new pki"
-step ca init --pki --name="fca" --deployment-type standalone --password-file /tmp/STEP_CA_KEY_PW
+step ca init --pki --name="tiny-ca" --deployment-type standalone --password-file /tmp/STEP_CA_KEY_PW
 
 sudo rmmod pico_rng
 

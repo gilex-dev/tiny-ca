@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PROVISIONER_NAME=fca@fnas.home.arpa
-DNS_NAME=fca.home.arpa,192.168.2.9
+PROVISIONER_NAME=tiny-ca@mail.home.arpa
+DNS_NAME=tiny-ca.home.arpa,192.168.2.123,localhost
 
 cd "$(dirname "${BASH_SOURCE[0]}")" && cd ..
 # all paths relative to project root from here
@@ -14,7 +14,7 @@ sudo mkdir -p /mnt/public_ca
 sudo mount $PUBLIC_CA_PART /mnt/public_ca
 
 export STEPPATH=/etc/step-ca
-sudo --preserve-env step ca init --name="fca" \
+sudo --preserve-env step ca init --name="tiny-ca" \
     --dns="$DNS_NAME" --address=":443" \
     --provisioner="$PROVISIONER_NAME" \
     --deployment-type standalone \
